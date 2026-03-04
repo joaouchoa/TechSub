@@ -1,0 +1,17 @@
+﻿using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
+using FluentValidation;
+
+namespace TechSub.Application.ServiceCollection
+{
+    public static class ApplicationServiceCollection
+    {
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+        {
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), ServiceLifetime.Scoped);
+            services.AddMediatR(options => options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
+            return services;
+        }
+    }
+}
