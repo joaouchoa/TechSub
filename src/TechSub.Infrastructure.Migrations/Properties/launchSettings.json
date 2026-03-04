@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "TechSub.Infrastructure.Migrations": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

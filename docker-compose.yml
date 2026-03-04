@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  # 1. Banco de Dados
+  postgres:
+    image: postgres:16
+    container_name: techsub_db
+    environment:
+      POSTGRES_USER: techsub_user
+      POSTGRES_PASSWORD: TechSubPassword123!
+      POSTGRES_DB: TechSubDb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - techsub_network
+    # O healthcheck garante que o banco não apenas subiu, mas está aceitando conexões
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U techsub_user -d TechSubDb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. Projeto de Migrations
+  migrations:
+    image: techsub_migrations
+    build:
+      context: .
+      dockerfile: src/TechSub.Infrastructure.Migrations/Dockerfile
+    container_name: techsub_migrations
+    environment:
+      # Passando a string de conexão via variável de ambiente
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=TechSubDb;Username=techsub_user;Password=TechSubPassword123!
+    networks:
+      - techsub_network
+    depends_on:
+      postgres:
+        condition: service_healthy # O DbUp só inicia quando o healthcheck do Postgres der "OK"
+
+  # 3. API REST
+  api:
+    image: techsub_api
+    build:
+      context: .
+      dockerfile: src/TechSub.API/Dockerfile
+    container_name: techsub_api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=TechSubDb;Username=techsub_user;Password=TechSubPassword123!
+    ports:
+      - "8080:8080" # Mapeia a porta 8080 do seu PC para a 8080 do contêiner
+    networks:
+      - techsub_network
+    depends_on:
+      migrations:
+        condition: service_completed_successfully # A API SÓ SOBE se o DbUp rodar e finalizar com Exit Code 0 (Sucesso)
+
+   # 4. Worker
+  worker:
+    image: techsub_worker
+    build:
+      context: .
+      dockerfile: src/TechSub.Worker/Dockerfile
+    container_name: techsub_worker
+    environment:
+      - DOTNET_ENVIRONMENT=Development
+      # O Worker usa a exata mesma string de conexão para acessar os dados
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=TechSubDb;Username=techsub_user;Password=TechSubPassword123!
+    networks:
+      - techsub_network
+    depends_on:
+      migrations:
+        condition: service_completed_successfully # O Worker também SÓ SOBE se o DbUp rodar com sucesso
+
+volumes:
+  # Garante que os dados do banco não sumam se você derrubar o contêiner
+  postgres_data:
+
+networks:
+  techsub_network:
+    driver: bridge

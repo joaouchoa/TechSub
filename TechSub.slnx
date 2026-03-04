@@ -1,0 +1,16 @@
+<Solution>
+  <Folder Name="/Itens de Solução/">
+    <File Path="docker-compose.yml" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/TechSub.API/TechSub.API.csproj" Id="16ae907f-d39b-442f-82ca-59bcda3fa583" />
+    <Project Path="src/TechSub.Application/TechSub.Application.csproj" Id="eefbf0fb-191d-423d-b9ab-1660715d12b1" />
+    <Project Path="src/TechSub.Domain/TechSub.Domain.csproj" Id="8db73396-a3fa-4aca-ab4e-700b7112b578" />
+    <Project Path="src/TechSub.Infrastructure.Migrations/TechSub.Infrastructure.Migrations.csproj" Id="c6e92138-15c8-461b-add0-4935ec21b80c" />
+    <Project Path="src/TechSub.Infrastructure/TechSub.Infrastructure.csproj" Id="4270a47d-3b23-489f-9366-fa2ac5663581" />
+    <Project Path="src/TechSub.Worker/TechSub.Worker.csproj" Id="e4857858-c3c6-42a8-8495-5bbae71fd201" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/TechSub.UnitTests/TechSub.UnitTests.csproj" Id="441d916e-6912-4ed6-8485-841374651582" />
+  </Folder>
+</Solution>
