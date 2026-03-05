@@ -1,0 +1,11 @@
+﻿CREATE TABLE "Plans" (
+    "Id" SERIAL PRIMARY KEY,
+    "Name" VARCHAR(100) NOT NULL,
+    "MonthlyPrice" NUMERIC(10,2) NOT NULL,
+    "AnnualPrice" NUMERIC(10,2) NOT NULL,
+    "IsTrialEligible" BOOLEAN NOT NULL,
+    "IsActive" BOOLEAN NOT NULL DEFAULT TRUE,
+    "Category" INTEGER NOT NULL,
+    "CreatedAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "UpdatedAt" TIMESTAMP NULL
+);

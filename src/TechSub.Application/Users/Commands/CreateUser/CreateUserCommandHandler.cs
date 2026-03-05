@@ -32,7 +32,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Resul
 
         var existingUser = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
         if (existingUser != null)
-            return Result<int>.Conflict(UserMessages.ERRO001_EmailAlreadyInUse);
+            return Result<int>.Conflict(ValidationMessages.ERRO001_EmailAlreadyInUse);
 
         var passwordHash = _passwordHasher.Hash(request.Password);
 

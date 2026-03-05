@@ -8,18 +8,18 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
     public CreateUserCommandValidator()
     {
         RuleFor(x => x.Name)
-            .NotEmpty().WithMessage(UserMessages.ERRO004_NameRequired)
-            .MaximumLength(100).WithMessage(UserMessages.ERRO005_NameMaxLength);
+            .NotEmpty().WithMessage(ValidationMessages.ERRO004_NameRequired)
+            .MaximumLength(100).WithMessage(ValidationMessages.ERRO005_NameMaxLength);
 
         RuleFor(x => x.Email)
-            .NotEmpty().WithMessage(UserMessages.ERRO006_EmailRequired)
-            .EmailAddress().WithMessage(UserMessages.ERRO007_EmailInvalidFormat);
+            .NotEmpty().WithMessage(ValidationMessages.ERRO006_EmailRequired)
+            .EmailAddress().WithMessage(ValidationMessages.ERRO007_EmailInvalidFormat);
 
         RuleFor(x => x.Password)
-            .NotEmpty().WithMessage(UserMessages.ERRO008_PasswordRequired)
-            .MinimumLength(6).WithMessage(UserMessages.ERRO009_PasswordMinLength)
-            .Matches(@"[A-Z]+").WithMessage(UserMessages.ERRO010_PasswordRequiresUppercase)
-            .Matches(@"[a-z]+").WithMessage(UserMessages.ERRO011_PasswordRequiresLowercase)
-            .Matches(@"[0-9]+").WithMessage(UserMessages.ERRO012_PasswordRequiresNumber);
+            .NotEmpty().WithMessage(ValidationMessages.ERRO008_PasswordRequired)
+            .MinimumLength(6).WithMessage(ValidationMessages.ERRO009_PasswordMinLength)
+            .Matches(@"[A-Z]+").WithMessage(ValidationMessages.ERRO010_PasswordRequiresUppercase)
+            .Matches(@"[a-z]+").WithMessage(ValidationMessages.ERRO011_PasswordRequiresLowercase)
+            .Matches(@"[0-9]+").WithMessage(ValidationMessages.ERRO012_PasswordRequiresNumber);
     }
 }

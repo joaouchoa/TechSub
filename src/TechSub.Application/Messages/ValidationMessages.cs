@@ -1,6 +1,6 @@
 ﻿namespace TechSub.Application.Users.Messages;
 
-public static class UserMessages
+public static class ValidationMessages
 {
     // Mensagens de Negócio
     public const string ERRO001_EmailAlreadyInUse = "ERRO001 - Este e-mail já está em uso.";
@@ -21,4 +21,11 @@ public static class UserMessages
     public const string ERRO010_PasswordRequiresUppercase = "ERRO010 - A senha deve conter pelo menos uma letra maiúscula.";
     public const string ERRO011_PasswordRequiresLowercase = "ERRO011 - A senha deve conter pelo menos uma letra minúscula.";
     public const string ERRO012_PasswordRequiresNumber = "ERRO012 - A senha deve conter pelo menos um número.";
+
+    public const string ERRO101_NameRequired = "ERRO013 - O nome do plano é obrigatório.";
+    public const string ERRO102_InvalidMonthlyPrice = "ERRO014 - O preço mensal deve ser maior ou igual a zero.";
+    public const string ERRO103_InvalidAnnualPrice = "ERRO015 - O preço anual deve ser maior ou igual a zero.";
+    public const string ERRO104_InvalidCategory = "ERRO016 - Categoria de plano inválida.";
+
+    public const string ERRO105_FreePlanCannotHaveTrial = "ERRO017 - Um plano gratuito (Free) não pode ser elegível para Trial.";
 }

@@ -38,11 +38,11 @@ public class LoginUserQueryHandler : IRequestHandler<LoginUserQuery, Result<stri
         var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
 
         if (user == null)
-            return Result<string>.Unauthorized(UserMessages.ERRO003_InvalidCredentials);
+            return Result<string>.Unauthorized(ValidationMessages.ERRO003_InvalidCredentials);
 
         var isPasswordValid = _passwordHasher.Verify(request.Password, user.PasswordHash);
         if (!isPasswordValid)
-            return Result<string>.Unauthorized(UserMessages.ERRO003_InvalidCredentials);
+            return Result<string>.Unauthorized(ValidationMessages.ERRO003_InvalidCredentials);
 
         var token = _tokenService.GenerateToken(user);
 

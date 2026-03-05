@@ -17,6 +17,7 @@ namespace TechSub.Infrastructure.ServiceCollection
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPlanRepository, PlanRepository>();
             services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
             services.AddScoped<ITokenService, JwtTokenService>();
 
