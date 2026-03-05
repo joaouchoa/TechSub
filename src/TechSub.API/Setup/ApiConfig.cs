@@ -4,7 +4,7 @@
     {
         public static IServiceCollection AddApiConfig(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDependencyInjection();
+            services.AddDependencyInjection(configuration);
             
             return services;
         }

@@ -5,10 +5,10 @@ namespace TechSub.API.Setup
 {
     public static class DependenceInjection
     {
-        public static IServiceCollection AddDependencyInjection(this IServiceCollection services)
+        public static IServiceCollection AddDependencyInjection(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddApplicationServices();
-            services.AddInfrastructureServices();
+            services.AddInfrastructureServices(configuration);
 
             return services;
         }
