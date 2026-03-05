@@ -18,6 +18,7 @@ namespace TechSub.Infrastructure.ServiceCollection
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
+            services.AddScoped<ITokenService, JwtTokenService>();
 
             return services;
         }
