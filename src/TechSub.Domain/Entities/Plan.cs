@@ -2,30 +2,33 @@
 
 public class Plan : BaseEntity
 {
-    public string Title { get; private set; }
-    public string Description { get; private set; }
-    public decimal Price { get; private set; }
+    public string Name { get; private set; }
+    public decimal MonthlyPrice { get; private set; }
+    public decimal AnnualPrice { get; private set; }
+    public bool IsTrialEligible { get; private set; }
     public bool IsActive { get; private set; }
 
-    public Plan(string title, string description, decimal price)
+    public Plan(string name, decimal monthlyPrice, decimal annualPrice, bool isTrialEligible)
     {
-        Title = title;
-        Description = description;
-        Price = price;
+        Name = name;
+        MonthlyPrice = monthlyPrice;
+        AnnualPrice = annualPrice;
+        IsTrialEligible = isTrialEligible;
         IsActive = true;
+    }
+
+    public void UpdateInfo(string name, decimal monthlyPrice, decimal annualPrice, bool isTrialEligible)
+    {
+        Name = name;
+        MonthlyPrice = monthlyPrice;
+        AnnualPrice = annualPrice;
+        IsTrialEligible = isTrialEligible;
+        UpdateTimestamp();
     }
 
     public void Deactivate()
     {
         IsActive = false;
-        UpdateTimestamp();
-    }
-
-    public void UpdateInfo(string title, string description, decimal price)
-    {
-        Title = title;
-        Description = description;
-        Price = price;
         UpdateTimestamp();
     }
 }
