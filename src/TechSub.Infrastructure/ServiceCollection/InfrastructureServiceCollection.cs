@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TechSub.Application.Interfaces;
 using TechSub.Domain.Repositories;
 using TechSub.Infrastructure.Data;
 using TechSub.Infrastructure.Repositories;
+using TechSub.Infrastructure.Security;
 
 namespace TechSub.Infrastructure.ServiceCollection
 {
@@ -15,6 +17,7 @@ namespace TechSub.Infrastructure.ServiceCollection
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
 
             return services;
         }
