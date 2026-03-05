@@ -1,0 +1,10 @@
+CREATE TABLE "Users" (
+    "Id" SERIAL PRIMARY KEY,
+    "Name" VARCHAR(100) NOT NULL,
+    "Email" VARCHAR(150) NOT NULL UNIQUE,
+    "PasswordHash" VARCHAR(255) NOT NULL,
+    "CreatedAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "UpdatedAt" TIMESTAMP NULL
+);
+
+CREATE INDEX "IX_Users_Email" ON "Users" ("Email");
