@@ -54,4 +54,12 @@ public class SubscriptionRepository : ISubscriptionRepository
         return await _dbContext.Subscriptions
             .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
     }
+
+    public async Task<IEnumerable<Subscription>> GetAllActiveAsync(CancellationToken cancellationToken)
+    {
+        return await _dbContext.Subscriptions
+            .AsNoTracking()
+            .Where(s => s.Status == ESubscriptionStatus.Active || s.Status == ESubscriptionStatus.Trialing)
+            .ToListAsync(cancellationToken);
+    }
 }

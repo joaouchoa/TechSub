@@ -28,4 +28,11 @@ public class UserRepository : IUserRepository
 
         return user.Id;
     }
+
+    public async Task<IEnumerable<User>> GetAllAsync(CancellationToken cancellationToken)
+    {
+        return await _context.Users
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+    }
 }
