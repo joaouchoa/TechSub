@@ -20,6 +20,7 @@ namespace TechSub.Infrastructure.ServiceCollection
             services.AddScoped<IPlanRepository, PlanRepository>();
             services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
             services.AddScoped<ITokenService, JwtTokenService>();
+            services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 
             return services;
         }

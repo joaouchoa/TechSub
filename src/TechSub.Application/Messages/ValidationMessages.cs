@@ -29,5 +29,10 @@ public static class ValidationMessages
 
     public const string ERRO017_FreePlanCannotHaveTrial = "ERRO017 - Um plano gratuito (Free) não pode ser elegível para Trial.";
 
-    public const string ERRO018_PlanNotFound = "ERRO018 - Plano não encontrado.";
+    public const string ERRO018_PlanNotFound = "ERRO018 - O plano selecionado não existe ou está inativo.";
+    public const string ERRO019_UserAlreadySubscribed = "ERRO019 - O usuário já possui uma assinatura ativa ou em período de testes.";
+    public const string ERRO020_SubscriptionNotFound = "ERRO020 - Você não possui nenhuma assinatura para cancelar.";
+    public const string ERRO021_SubscriptionAlreadyCanceled = "ERRO021 - Sua assinatura já se encontra cancelada.";
+    public const string ERRO022_TrialOnlyForNewSubscribers = "ERRO022 - O período de testes está disponível apenas para novos assinantes.";
+    public const string ERRO023_PlanNotEligibleForTrial = "ERRO023 - Este plano não é elegível para período de testes gratuito.";
 }
