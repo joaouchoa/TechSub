@@ -7,7 +7,7 @@ namespace TechSub.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+[Authorize(Roles = "Admin")]
 public class PaymentsController : ControllerBase
 {
     private readonly IMediator _mediator;

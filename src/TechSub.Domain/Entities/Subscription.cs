@@ -33,7 +33,7 @@ public class Subscription : BaseEntity
         {
             Status = ESubscriptionStatus.Active;
             TrialEndDate = null;
-            CalculateNextBillingDate();
+            NextBillingDate = GetBrazilianTime();
         }
     }
 
