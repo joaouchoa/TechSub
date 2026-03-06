@@ -14,21 +14,21 @@ public class CreatePlanCommandValidator : AbstractValidator<CreatePlanCommand>
     public CreatePlanCommandValidator()
     {
         RuleFor(x => x.Name)
-            .NotEmpty().WithMessage(ValidationMessages.ERRO101_NameRequired);
+            .NotEmpty().WithMessage(ValidationMessages.ERRO013_NameRequired);
 
         RuleFor(x => x.MonthlyPrice)
-            .GreaterThanOrEqualTo(0).WithMessage(ValidationMessages.ERRO102_InvalidMonthlyPrice);
+            .GreaterThanOrEqualTo(0).WithMessage(ValidationMessages.ERRO014_InvalidMonthlyPrice);
 
         RuleFor(x => x.AnnualPrice)
-            .GreaterThanOrEqualTo(0).WithMessage(ValidationMessages.ERRO103_InvalidAnnualPrice);
+            .GreaterThanOrEqualTo(0).WithMessage(ValidationMessages.ERRO015_InvalidAnnualPrice);
 
         RuleFor(x => x.Category)
-            .IsInEnum().WithMessage(ValidationMessages.ERRO104_InvalidCategory);
+            .IsInEnum().WithMessage(ValidationMessages.ERRO016_InvalidCategory);
 
         RuleFor(x => x.IsTrialEligible)
             .Equal(false)
             .When(x => x.Category == ECategory.Free)
-            .WithMessage(ValidationMessages.ERRO105_FreePlanCannotHaveTrial);
+            .WithMessage(ValidationMessages.ERRO017_FreePlanCannotHaveTrial);
     }
 }
 

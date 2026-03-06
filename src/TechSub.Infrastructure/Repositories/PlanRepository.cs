@@ -30,9 +30,15 @@ public class PlanRepository : IPlanRepository
     public async Task<IEnumerable<Plan>> GetAllActiveAsync(CancellationToken cancellationToken)
     {
         return await _dbContext.Plans
-            .AsNoTracking() // Deixa a query de leitura super rápida, pois o EF não fica "vigiando" os objetos
+            .AsNoTracking() 
             .Where(p => p.IsActive)
             .ToListAsync(cancellationToken);
+    }
+
+    public async Task UpdateAsync(Plan plan, CancellationToken cancellationToken)
+    {
+        _dbContext.Plans.Update(plan);
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 }
 

@@ -22,10 +22,12 @@ public static class ValidationMessages
     public const string ERRO011_PasswordRequiresLowercase = "ERRO011 - A senha deve conter pelo menos uma letra minúscula.";
     public const string ERRO012_PasswordRequiresNumber = "ERRO012 - A senha deve conter pelo menos um número.";
 
-    public const string ERRO101_NameRequired = "ERRO013 - O nome do plano é obrigatório.";
-    public const string ERRO102_InvalidMonthlyPrice = "ERRO014 - O preço mensal deve ser maior ou igual a zero.";
-    public const string ERRO103_InvalidAnnualPrice = "ERRO015 - O preço anual deve ser maior ou igual a zero.";
-    public const string ERRO104_InvalidCategory = "ERRO016 - Categoria de plano inválida.";
+    public const string ERRO013_NameRequired = "ERRO013 - O nome do plano é obrigatório.";
+    public const string ERRO014_InvalidMonthlyPrice = "ERRO014 - O preço mensal deve ser maior ou igual a zero.";
+    public const string ERRO015_InvalidAnnualPrice = "ERRO015 - O preço anual deve ser maior ou igual a zero.";
+    public const string ERRO016_InvalidCategory = "ERRO016 - Categoria de plano inválida.";
 
-    public const string ERRO105_FreePlanCannotHaveTrial = "ERRO017 - Um plano gratuito (Free) não pode ser elegível para Trial.";
+    public const string ERRO017_FreePlanCannotHaveTrial = "ERRO017 - Um plano gratuito (Free) não pode ser elegível para Trial.";
+
+    public const string ERRO018_PlanNotFound = "ERRO018 - Plano não encontrado.";
 }
