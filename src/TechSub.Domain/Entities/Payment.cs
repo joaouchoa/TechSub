@@ -18,7 +18,7 @@ public class Payment : BaseEntity
         SubscriptionId = subscriptionId;
         Amount = amount;
         Status = PaymentStatus.Pending;
-        PaymentDate = DateTime.UtcNow;
+        PaymentDate = GetBrazilianTime();
     }
 
     public void MarkAsSuccess(string transactionId)

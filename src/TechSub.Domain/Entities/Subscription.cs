@@ -26,7 +26,7 @@ public class Subscription : BaseEntity
         if (planHasTrial)
         {
             Status = ESubscriptionStatus.Trialing;
-            TrialEndDate = DateTime.UtcNow.AddDays(7);
+            TrialEndDate = GetBrazilianTime().AddDays(7);
             NextBillingDate = TrialEndDate;
         }
         else
@@ -51,6 +51,15 @@ public class Subscription : BaseEntity
         UpdateTimestamp();
     }
 
+    public void ExecuteScheduledCancellation()
+    {
+        Status = ESubscriptionStatus.Canceled;
+        NextBillingDate = null;    
+        CancelAtPeriodEnd = false;
+
+        UpdateTimestamp();
+    }
+
     public void ExtendBillingCycle()
     {
         Status = ESubscriptionStatus.Active;
@@ -61,9 +70,21 @@ public class Subscription : BaseEntity
 
     private void CalculateNextBillingDate()
     {
-        var baseDate = NextBillingDate ?? DateTime.UtcNow;
+        var baseDate = NextBillingDate ?? GetBrazilianTime();
         NextBillingDate = Cycle == EBillingCycle.Monthly
             ? baseDate.AddMonths(1)
             : baseDate.AddYears(1);
+    }
+
+    public void DowngradeToFreePlan()
+    {
+        PlanId = 1;
+        Cycle = EBillingCycle.Monthly;
+        NextBillingDate = null;       
+        TrialEndDate = null;          
+        Status = ESubscriptionStatus.Active; 
+        CancelAtPeriodEnd = false;   
+
+        UpdateTimestamp();
     }
 }

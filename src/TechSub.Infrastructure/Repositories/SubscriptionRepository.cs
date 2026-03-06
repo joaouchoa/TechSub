@@ -92,4 +92,19 @@ public class SubscriptionRepository : ISubscriptionRepository
         // 4. A Execução: Vai no banco e traz a lista pronta
         return await query.ToListAsync(cancellationToken);
     }
+
+    public async Task<IEnumerable<Subscription>> GetSubscriptionsDueTodayAsync(DateTime today, CancellationToken cancellationToken)
+    {
+        var targetDate = today.Date;
+
+        return await _dbContext.Subscriptions
+            .Where(s =>
+                (s.Status == ESubscriptionStatus.Active || s.Status == ESubscriptionStatus.Trialing) &&
+                (
+                    (s.NextBillingDate != null && s.NextBillingDate.Value.Date <= targetDate) ||
+                    (s.TrialEndDate != null && s.TrialEndDate.Value.Date <= targetDate)
+                )
+            )
+            .ToListAsync(cancellationToken);
+    }
 }

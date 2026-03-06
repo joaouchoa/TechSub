@@ -57,6 +57,9 @@ public class SimulatePaymentCommandHandler : IRequestHandler<SimulatePaymentComm
         await _paymentRepository.AddAsync(payment, cancellationToken);
         await _subscriptionRepository.UpdateAsync(subscription, cancellationToken);
 
+        if (!request.SimulateSuccess)
+            return Result<int>.BadRequest("Falha no processamento do pagamento.");
+
         return Result<int>.Sucess(payment.Id);
     }
 }

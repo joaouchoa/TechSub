@@ -1,11 +1,14 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Hangfire;
 using System.Text;
 using TechSub.API.Setup;
+using Hangfire.PostgreSql;
+using Microsoft.OpenApi.Models;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+var builder = WebApplication.CreateBuilder(args);
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -69,6 +72,21 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// Pega a sua connection string existente
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// Configura o Hangfire para usar o PostgreSQL
+builder.Services.AddHangfire(config => config
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UsePostgreSqlStorage(c => c.UseNpgsqlConnection(connectionString)));
+
+// Adiciona o servidor do Hangfire (o motor que roda em background)
+builder.Services.AddHangfireServer();
+// Regista o Job na injeção de dependências para o Hangfire conseguir aceder aos Repositórios
+builder.Services.AddTransient<TechSub.Application.Jobs.SubscriptionBillingJob>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -79,7 +97,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseHangfireDashboard("/hangfire");
+RecurringJob.AddOrUpdate<TechSub.Application.Jobs.SubscriptionBillingJob>(
+    "Processamento-Assinaturas",
+    job => job.ProcessDailyBillingAsync(),
+    Cron.Minutely()
+);
 app.UseAuthentication();
 app.UseAuthorization();
 

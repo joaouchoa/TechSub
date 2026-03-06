@@ -9,12 +9,20 @@ namespace TechSub.Domain.Entities
 
         protected BaseEntity()
         {
-            CreatedAt = DateTime.UtcNow;
+            CreatedAt = GetBrazilianTime();
         }
 
         public void UpdateTimestamp()
         {
-            UpdatedAt = DateTime.UtcNow;
+            UpdatedAt = GetBrazilianTime();
+        }
+
+        protected DateTime GetBrazilianTime()
+        {
+            var brazilTimeZone = TimeZoneInfo.FindSystemTimeZoneById(
+                OperatingSystem.IsWindows() ? "E. South America Standard Time" : "America/Sao_Paulo");
+
+            return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, brazilTimeZone);
         }
     }
 }

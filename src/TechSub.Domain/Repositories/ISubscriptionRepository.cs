@@ -13,4 +13,5 @@ public interface ISubscriptionRepository
     Task<Subscription?> GetByIdAsync(int id, CancellationToken cancellationToken);
     Task<IEnumerable<Subscription>> GetAllActiveAsync(CancellationToken cancellationToken);
     Task<IEnumerable<SubscriptionDetailsProjection>> GetDashboardRawDataAsync(CancellationToken cancellationToken);
+    Task<IEnumerable<Subscription>> GetSubscriptionsDueTodayAsync(DateTime today, CancellationToken cancellationToken);
 }

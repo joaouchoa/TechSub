@@ -1,0 +1,1 @@
+﻿ALTER DATABASE "TechSubDb" SET timezone TO 'America/Sao_Paulo';
