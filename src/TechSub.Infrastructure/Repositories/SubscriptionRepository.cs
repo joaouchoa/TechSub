@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TechSub.Domain.Entities;
-using TechSub.Domain.Enuns; // Ajuste para o namespace exato do seu SubscriptionStatus
+using TechSub.Domain.Enuns; 
+using TechSub.Domain.Models;
 using TechSub.Domain.Repositories;
 using TechSub.Infrastructure.Data;
 
@@ -61,5 +62,34 @@ public class SubscriptionRepository : ISubscriptionRepository
             .AsNoTracking()
             .Where(s => s.Status == ESubscriptionStatus.Active || s.Status == ESubscriptionStatus.Trialing)
             .ToListAsync(cancellationToken);
+    }
+
+    public async Task<IEnumerable<SubscriptionDetailsProjection>> GetDashboardRawDataAsync(CancellationToken cancellationToken)
+    {
+        // Usamos a sintaxe de "Query" do LINQ (parecida com SQL) porque ela é excelente para fazer JOINs
+        var query = from s in _dbContext.Subscriptions.AsNoTracking()
+
+                    // 1. O Filtro: Só queremos quem está pagando ou testando
+                    where s.Status == ESubscriptionStatus.Active || s.Status == ESubscriptionStatus.Trialing
+
+                    // 2. Os Cruzamentos (JOINs)
+                    join p in _dbContext.Plans on s.PlanId equals p.Id
+                    join u in _dbContext.Users on s.UserId equals u.Id
+
+                    // 3. A Projeção (O "Select")
+                    select new SubscriptionDetailsProjection(
+                        p.Id,
+                        p.Name,
+                        p.MonthlyPrice,
+                        p.AnnualPrice,
+                        u.Id,
+                        u.Name,
+                        u.Email,
+                        s.Status,
+                        s.Cycle
+                    );
+
+        // 4. A Execução: Vai no banco e traz a lista pronta
+        return await query.ToListAsync(cancellationToken);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using TechSub.Domain.Entities;
+using TechSub.Domain.Models;
 
 namespace TechSub.Domain.Repositories;
 
@@ -11,4 +12,5 @@ public interface ISubscriptionRepository
     Task<bool> HasUserEverSubscribedAsync(int userId, CancellationToken cancellationToken);
     Task<Subscription?> GetByIdAsync(int id, CancellationToken cancellationToken);
     Task<IEnumerable<Subscription>> GetAllActiveAsync(CancellationToken cancellationToken);
+    Task<IEnumerable<SubscriptionDetailsProjection>> GetDashboardRawDataAsync(CancellationToken cancellationToken);
 }

@@ -8,64 +8,53 @@ namespace TechSub.Application.Subscriptions.Queries.GetDashboardReport;
 public class GetDashboardReportQueryHandler : IRequestHandler<GetDashboardReportQuery, Result<DashboardReportDto>>
 {
     private readonly ISubscriptionRepository _subscriptionRepository;
-    private readonly IPlanRepository _planRepository;
-    private readonly IUserRepository _userRepository;
 
-    public GetDashboardReportQueryHandler(
-        ISubscriptionRepository subscriptionRepository,
-        IPlanRepository planRepository,
-        IUserRepository userRepository)
+    public GetDashboardReportQueryHandler(ISubscriptionRepository subscriptionRepository)
     {
         _subscriptionRepository = subscriptionRepository;
-        _planRepository = planRepository;
-        _userRepository = userRepository;
     }
 
     public async Task<Result<DashboardReportDto>> Handle(GetDashboardReportQuery request, CancellationToken cancellationToken)
     {
-        var plans = await _planRepository.GetAllActiveAsync(cancellationToken);
-        var activeSubscriptions = await _subscriptionRepository.GetAllActiveAsync(cancellationToken);
-        var users = await _userRepository.GetAllAsync(cancellationToken);
+        var rawData = await _subscriptionRepository.GetDashboardRawDataAsync(cancellationToken);
+
         var planReports = new List<PlanReportDto>();
         decimal totalCompanyMRR = 0;
 
-        foreach (var plan in plans)
+        var groupedByPlan = rawData.GroupBy(r => r.PlanId);
+
+        foreach (var group in groupedByPlan)
         {
-            var subsInThisPlan = activeSubscriptions.Where(s => s.PlanId == plan.Id).ToList();
             decimal currentPlanMRR = 0;
             var subscribersList = new List<SubscriberDto>();
+            string planName = group.First().PlanName;
 
-            foreach (var sub in subsInThisPlan)
+            foreach (var row in group)
             {
-                var user = users.FirstOrDefault(u => u.Id == sub.UserId);
-                if (user != null)
+                subscribersList.Add(new SubscriberDto(
+                    row.UserId,
+                    row.UserName,
+                    row.UserEmail,
+                    row.Status.ToString(),
+                    row.Cycle.ToString()
+                ));
+
+                if (row.Status == ESubscriptionStatus.Active)
                 {
-                    subscribersList.Add(new SubscriberDto(
-                        user.Id,
-                        user.Name,
-                        user.Email,
-                        sub.Status.ToString(),
-                        sub.Cycle.ToString()
-                    ));
-                }
-                if (sub.Status == ESubscriptionStatus.Active)
-                {
-                    if (sub.Cycle == EBillingCycle.Monthly)
-                    {
-                        currentPlanMRR += plan.MonthlyPrice;
-                    }
-                    else if (sub.Cycle == EBillingCycle.Annual)
-                    {
-                        currentPlanMRR += (plan.AnnualPrice / 12);
-                    }
+                    if (row.Cycle == EBillingCycle.Monthly)
+                        currentPlanMRR += row.MonthlyPrice;
+                    else if (row.Cycle == EBillingCycle.Annual)
+                        currentPlanMRR += (row.AnnualPrice / 12);
                 }
             }
+
             planReports.Add(new PlanReportDto(
-                plan.Name,
+                planName,
                 currentPlanMRR,
                 subscribersList.Count,
                 subscribersList
             ));
+
             totalCompanyMRR += currentPlanMRR;
         }
 
