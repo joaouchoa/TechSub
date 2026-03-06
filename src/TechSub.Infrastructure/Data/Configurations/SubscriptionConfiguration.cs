@@ -16,7 +16,8 @@ public class SubscriptionConfiguration : IEntityTypeConfiguration<Subscription>
         builder.Property(s => s.Cycle).IsRequired();
         builder.Property(s => s.Status).IsRequired();
         builder.Property(s => s.TrialEndDate).IsRequired(false);
-
+        builder.Property(s => s.NextBillingDate).IsRequired(false);
+        builder.Property(s => s.CancelAtPeriodEnd).IsRequired();
         builder.Property(s => s.CreatedAt).IsRequired();
         builder.Property(s => s.UpdatedAt).IsRequired(false);
     }

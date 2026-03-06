@@ -11,6 +11,9 @@ public class Subscription : BaseEntity
     public ESubscriptionStatus Status { get; private set; }
     public DateTime? TrialEndDate { get; private set; }
 
+    public DateTime? NextBillingDate { get; private set; }
+    public bool CancelAtPeriodEnd { get; private set; }
+
     private Subscription() { }
 
     public Subscription(int userId, int planId, EBillingCycle cycle, bool planHasTrial)
@@ -18,22 +21,49 @@ public class Subscription : BaseEntity
         UserId = userId;
         PlanId = planId;
         Cycle = cycle;
+        CancelAtPeriodEnd = false;
 
         if (planHasTrial)
         {
             Status = ESubscriptionStatus.Trialing;
             TrialEndDate = DateTime.UtcNow.AddDays(7);
+            NextBillingDate = TrialEndDate;
         }
         else
         {
             Status = ESubscriptionStatus.Active;
             TrialEndDate = null;
+            CalculateNextBillingDate();
         }
     }
 
     public void Cancel()
     {
-        Status = ESubscriptionStatus.Canceled;
+        if (Status == ESubscriptionStatus.Trialing)
+        {
+            Status = ESubscriptionStatus.Canceled;
+        }
+        else if (Status == ESubscriptionStatus.Active)
+        {
+            CancelAtPeriodEnd = true;
+        }
+
         UpdateTimestamp();
+    }
+
+    public void ExtendBillingCycle()
+    {
+        Status = ESubscriptionStatus.Active;
+        CancelAtPeriodEnd = false;
+        CalculateNextBillingDate();
+        UpdateTimestamp();
+    }
+
+    private void CalculateNextBillingDate()
+    {
+        var baseDate = NextBillingDate ?? DateTime.UtcNow;
+        NextBillingDate = Cycle == EBillingCycle.Monthly
+            ? baseDate.AddMonths(1)
+            : baseDate.AddYears(1);
     }
 }

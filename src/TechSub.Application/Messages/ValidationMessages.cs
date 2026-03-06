@@ -35,4 +35,7 @@ public static class ValidationMessages
     public const string ERRO021_SubscriptionAlreadyCanceled = "ERRO021 - Sua assinatura já se encontra cancelada.";
     public const string ERRO022_TrialOnlyForNewSubscribers = "ERRO022 - O período de testes está disponível apenas para novos assinantes.";
     public const string ERRO023_PlanNotEligibleForTrial = "ERRO023 - Este plano não é elegível para período de testes gratuito.";
+    public const string ERRO024_SubscriptionNotExists = "ERRO024 - Assinatura não encontrada.";
+    public const string ERRO025_NotPossibleToChargeCancelledSubscription = "ERRO025 - Não é possível cobrar uma assinatura cancelada.";
+    public const string ERRO026_ThePlanIsNoLongerExists = "ERRO026 - O plano selecionado não existe mais.";
 }

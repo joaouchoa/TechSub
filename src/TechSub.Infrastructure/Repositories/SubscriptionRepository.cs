@@ -48,4 +48,10 @@ public class SubscriptionRepository : ISubscriptionRepository
         return await _dbContext.Subscriptions
             .AnyAsync(s => s.UserId == userId, cancellationToken);
     }
+
+    public async Task<Subscription?> GetByIdAsync(int id, CancellationToken cancellationToken)
+    {
+        return await _dbContext.Subscriptions
+            .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
+    }
 }

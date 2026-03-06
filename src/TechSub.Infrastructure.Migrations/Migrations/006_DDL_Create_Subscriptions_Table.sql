@@ -7,6 +7,8 @@
     "TrialEndDate" TIMESTAMP NULL,
     "CreatedAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "UpdatedAt" TIMESTAMP NULL,
+    "NextBillingDate" TIMESTAMP NULL,
+    "CancelAtPeriodEnd" BOOLEAN NOT NULL DEFAULT FALSE,
     
     CONSTRAINT "FK_Subscriptions_Users" FOREIGN KEY ("UserId") REFERENCES "Users" ("Id"),
     CONSTRAINT "FK_Subscriptions_Plans" FOREIGN KEY ("PlanId") REFERENCES "Plans" ("Id")

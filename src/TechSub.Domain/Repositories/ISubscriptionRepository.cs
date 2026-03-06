@@ -9,4 +9,5 @@ public interface ISubscriptionRepository
     Task<bool> UserAlreadyHasActiveSubscriptionAsync(int userId, CancellationToken cancellationToken);
     Task UpdateAsync(Subscription subscription, CancellationToken cancellationToken);
     Task<bool> HasUserEverSubscribedAsync(int userId, CancellationToken cancellationToken);
+    Task<Subscription?> GetByIdAsync(int id, CancellationToken cancellationToken);
 }
