@@ -35,4 +35,9 @@ public class UserRepository : IUserRepository
             .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<User> GetByIdAsync(int id, CancellationToken cancellationToken)
+    {
+        return await _context.Users.SingleOrDefaultAsync(u => u.Id == id, cancellationToken);
+    }
 }
