@@ -57,23 +57,6 @@ services:
       migrations:
         condition: service_completed_successfully # A API SÓ SOBE se o DbUp rodar e finalizar com Exit Code 0 (Sucesso)
 
-   # 4. Worker
-  worker:
-    image: techsub_worker
-    build:
-      context: .
-      dockerfile: src/TechSub.Worker/Dockerfile
-    container_name: techsub_worker
-    environment:
-      - DOTNET_ENVIRONMENT=Development
-      # O Worker usa a exata mesma string de conexão para acessar os dados
-      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=TechSubDb;Username=techsub_user;Password=TechSubPassword123!
-    networks:
-      - techsub_network
-    depends_on:
-      migrations:
-        condition: service_completed_successfully # O Worker também SÓ SOBE se o DbUp rodar com sucesso
-
 volumes:
   # Garante que os dados do banco não sumam se você derrubar o contêiner
   postgres_data:
